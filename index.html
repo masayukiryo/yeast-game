@@ -1,351 +1,193 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ドライイースト実験ゲーム</title>
+<title>パンがふくらむナゾを解け！</title>
 
 <style>
 body {
-  font-family: "Hiragino Sans","Yu Gothic",sans-serif;
-  margin: 0;
-  color: #2f2a24;
-  background:
-    radial-gradient(1200px 300px at -10% 10%, rgba(255,255,255,0.5), transparent 60%),
-    radial-gradient(900px 240px at 110% 20%, rgba(255,255,255,0.3), transparent 60%),
-    linear-gradient(180deg,#fffaf2 0%,#f5ecdf 100%);
-}
-
-.container {
-  display: flex;
-  min-height: 100vh;
-}
-
-.sidebar {
-  width: 220px;
-  background: linear-gradient(180deg,#6b4f3a 0%,#4a3527 100%);
-  color: white;
+  font-family: "Hiragino Maru Gothic ProN", sans-serif;
+  background: linear-gradient(#fff7e6, #ffe0b3);
+  text-align: center;
   padding: 20px;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.08);
 }
 
-.sidebar h2 {
-  margin-top: 0;
-  font-size: 16px;
-  letter-spacing: 0.03em;
-}
-
-.sidebar a {
-  display: block;
-  color: white;
-  text-decoration: none;
-  padding: 9px 10px;
-  border-radius: 8px;
-  margin-bottom: 6px;
-}
-
-.sidebar a:hover {
-  background: rgba(255,255,255,0.14);
-}
-
-.main {
-  flex: 1;
-  padding: 24px;
-}
-
-.hero {
-  background: linear-gradient(135deg,#f6c56f 0%,#e39b4f 100%);
-  padding: 24px;
-  border-radius: 20px;
-  margin-bottom: 18px;
-  box-shadow: 0 10px 24px rgba(180,120,50,0.18);
-}
-
-.hero-top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.hero-icon {
-  font-size: 42px;
-  line-height: 1;
-}
-
-.hero h1 {
-  margin: 0;
-  font-size: 30px;
-}
-
-.hero p {
-  margin: 10px 0 0 0;
-  line-height: 1.7;
-}
-
-.card {
-  background: rgba(255,255,255,0.94);
-  padding: 18px;
-  margin-bottom: 16px;
-  border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  border: 1px solid rgba(120,90,60,0.08);
-}
-
-.card h2 {
-  margin-top: 0;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 10px;
-}
-
-label.option {
-  display: block;
-  background: #fffaf5;
+/* タイトル */
+h1 {
+  background: #ffcc66;
   padding: 12px;
   border-radius: 12px;
-  border: 1px solid #eadac7;
 }
 
-input[type="range"] {
-  width: 100%;
+/* カード */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  margin-top: 20px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
 }
 
-button {
-  padding: 12px 16px;
-  border: none;
-  border-radius: 10px;
-  background: #d97706;
-  color: white;
-  cursor: pointer;
-  font-size: 15px;
+/* キャラ＋吹き出し */
+.character-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
 
-button:hover {
-  opacity: 0.9;
+.kobokun {
+  width: 120px;
 }
 
-.result {
-  font-size: 22px;
+.speech {
+  position: relative;
+  background: white;
+  border: 3px solid #ff9966;
+  border-radius: 15px;
+  padding: 12px;
+  max-width: 220px;
+  text-align: left;
+}
+
+/* 吹き出しのしっぽ */
+.speech::after {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: 20px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent #ff9966 transparent transparent;
+}
+
+/* 強調 */
+.highlight {
+  color: #ff6600;
   font-weight: bold;
-  margin-top: 14px;
-  color: #9a3412;
 }
 
-#reason {
-  margin-top: 10px;
-  line-height: 1.8;
-  color: #5c4b3d;
-}
-
-.observation-box {
-  margin-top: 14px;
-  padding: 14px;
-  background: #fff7e8;
-  border-left: 6px solid #f59e0b;
-  border-radius: 10px;
-}
-
-.observation-box h3 {
-  margin: 0 0 8px 0;
-  font-size: 16px;
-}
-
-.observation-box ul {
-  margin: 0;
-  padding-left: 20px;
-}
-
-.link-button {
-  display: inline-block;
+/* ボタン */
+button {
+  background: linear-gradient(#ff9966, #ff6600);
+  border: none;
+  border-radius: 20px;
   padding: 12px 20px;
-  background: #10b981;
+  font-size: 18px;
   color: white;
-  text-decoration: none;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(16,185,129,0.18);
+  margin: 10px;
+  box-shadow: 0 4px 0 #cc5200;
+  cursor: pointer;
 }
 
-.link-button:hover {
-  opacity: 0.86;
+button:active {
+  transform: translateY(4px);
+  box-shadow: none;
 }
 
-.note {
-  color: #6b5b4b;
-  font-size: 14px;
+/* 非表示 */
+.hidden {
+  display: none;
 }
 
-@media (max-width: 800px) {
-  .container {
-    flex-direction: column;
-  }
+/* アニメーション */
+.fade {
+  animation: fadeIn 0.6s ease;
+}
 
-  .sidebar {
-    width: auto;
-  }
-
-  .grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero h1 {
-    font-size: 24px;
-  }
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
 }
 </style>
 
 </head>
-
 <body>
 
-<div class="container">
+<h1>🍞 パンがふくらむナゾを解け！</h1>
 
-  <div class="sidebar">
-    <h2>実験一覧</h2>
-    <a href="index.html">① ドライイーストは何と反応する？</a>
-    <a href="#">② 温度と変化（予定）</a>
-    <a href="#">③ 袋と膨らみ（予定）</a>
+<div class="card">
+
+<!-- STEP1 -->
+<div id="step1" class="fade">
+  <div class="character-area">
+    <img src="kobokun.png" class="kobokun">
+
+    <div class="speech">
+      こうぼくん「ドライイーストって、<br>
+      どうして<span class="highlight">泡</span>が出るの？」
+    </div>
   </div>
 
-  <div class="main">
+  <p>予想してみよう！</p>
 
-```
-<div class="hero">
-  <div class="hero-top">
-    <div class="hero-icon">🍞</div>
-    <h1>ドライイーストに何を加えると発酵する？</h1>
+  <button onclick="next(2)">砂糖を食べる</button>
+  <button onclick="next(2)">水だけで反応する</button>
+</div>
+
+<!-- STEP2 -->
+<div id="step2" class="hidden">
+  <div class="character-area">
+    <img src="kobokun.png" class="kobokun">
+
+    <div class="speech">
+      こうぼくん「実験してみたよ！」
+    </div>
   </div>
+
   <p>
-    ドライイーストは乾燥している。まずは液体が必要ではないか？
-    さらに、何を加えると変化が大きくなるのかを考えてみよう。
+  水＋イースト<br>
+  水＋砂糖＋イースト
+  </p>
+
+  <button onclick="next(3)">結果を見る</button>
+</div>
+
+<!-- STEP3 -->
+<div id="step3" class="hidden">
+  <div class="character-area">
+    <img src="kobokun.png" class="kobokun">
+
+    <div class="speech">
+      こうぼくん「どっちが多かった？」
+    </div>
+  </div>
+
+  <button onclick="answer(true)">砂糖あり</button>
+  <button onclick="answer(false)">同じくらい</button>
+</div>
+
+<!-- RESULT -->
+<div id="result" class="hidden">
+  <div class="character-area">
+    <img src="kobokun.png" class="kobokun">
+
+    <div class="speech" id="resultText">
+    </div>
+  </div>
+
+  <p>
+  ドライイーストは砂糖を使って活動し、<br>
+  二酸化炭素（泡）をたくさん出すよ！
   </p>
 </div>
 
-<div class="card">
-  <h2>① 液体をえらぶ</h2>
-  <div class="grid">
-    <label class="option"><input type="radio" name="liquid" value="water"> 水</label>
-    <label class="option"><input type="radio" name="liquid" value="milk"> 牛乳</label>
-  </div>
-</div>
-
-<div class="card">
-  <h2>② 何を加える？</h2>
-  <div class="grid">
-    <label class="option"><input type="radio" name="addin" value="nothing" checked> 何も加えない</label>
-    <label class="option"><input type="radio" name="addin" value="sugar"> 砂糖</label>
-    <label class="option"><input type="radio" name="addin" value="salt"> 塩</label>
-  </div>
-</div>
-
-<div class="card">
-  <h2>③ 温度</h2>
-  <input type="range" id="temp" min="0" max="60" value="40">
-  <div id="tempVal">40℃</div>
-  <p class="note">ヒント：パン作りでは、あたたかい温度で変化が起きやすいことがある。</p>
-</div>
-
-<div class="card">
-  <button onclick="run()">スタート</button>
-  <div class="result" id="result">ここに結果</div>
-  <div id="reason"></div>
-
-  <div class="observation-box" id="observationBox" style="display:none;">
-    <h3>今回の実験から分かったこと</h3>
-    <ul id="observationList"></ul>
-  </div>
-</div>
-
-<div class="card" style="text-align:center;">
-  <p>実際のおうち実験も見てみよう</p>
-  <a href="experiment-log.html" class="link-button">我が家のおうち実験 →</a>
-</div>
-```
-
-  </div>
 </div>
 
 <script>
-const temp = document.getElementById('temp');
-const tempVal = document.getElementById('tempVal');
+function next(step) {
+  document.querySelectorAll(".card > div").forEach(el => el.classList.add("hidden"));
+  document.getElementById("step" + step).classList.remove("hidden");
+}
 
-temp.oninput = () => {
-  tempVal.textContent = temp.value + '℃';
-};
+function answer(correct) {
+  document.querySelectorAll(".card > div").forEach(el => el.classList.add("hidden"));
+  document.getElementById("result").classList.remove("hidden");
 
-function run() {
-  const liquid = document.querySelector('input[name="liquid"]:checked');
-  const addin = document.querySelector('input[name="addin"]:checked').value;
-  const t = Number(temp.value);
-
-  let score = 0;
-  let reason = [];
-  let observations = [];
-
-  if (!liquid) {
-    reason.push('ドライイーストは乾燥しているので、まず液体が必要。');
+  if (correct) {
+    document.getElementById("resultText").innerHTML = "🎉 正解！すごい！";
   } else {
-    if (liquid.value === 'water') {
-      score += 25;
-      reason.push('水を加えると、ドライイーストが活動しやすくなる。');
-    }
-
-    if (liquid.value === 'milk') {
-      score += 20;
-      reason.push('牛乳でも水分があるので、ドライイーストは活動しやすくなる。');
-    }
-
-    if (addin === 'nothing') {
-      reason.push('何も加えないと、変化は小さくなりやすい。');
-    }
-
-    if (addin === 'sugar') {
-      score += 40;
-      reason.push('砂糖を加えると、発酵が進みやすい。');
-      observations.push('砂糖を加えたものは泡が発生した。');
-      observations.push('砂糖の有無で明確に差がある。');
-    }
-
-    if (addin === 'salt') {
-      score -= 20;
-      reason.push('塩を加えると、ドライイーストの活動が弱まりやすい。');
-    }
-
-    if (t >= 35 && t <= 42) {
-      score += 30;
-      reason.push('温度が適していて、変化が起きやすい。');
-    } else {
-      reason.push('温度が適温から外れていて、変化が弱くなるかもしれない。');
-    }
-  }
-
-  if (score < 0) score = 0;
-
-  let text = '変化なし';
-  if (score > 20) text = '少し変化';
-  if (score > 50) text = '発酵する';
-  if (score > 80) text = 'よく発酵！';
-
-  document.getElementById('result').textContent = text;
-  document.getElementById('reason').textContent = reason.join(' / ');
-
-  const observationBox = document.getElementById('observationBox');
-  const observationList = document.getElementById('observationList');
-  observationList.innerHTML = '';
-
-  if (observations.length > 0) {
-    observations.forEach(item => {
-      const li = document.createElement('li');
-      li.textContent = item;
-      observationList.appendChild(li);
-    });
-    observationBox.style.display = 'block';
-  } else {
-    observationBox.style.display = 'none';
+    document.getElementById("resultText").innerHTML = "🤔 おしい！もう一回考えよう";
   }
 }
 </script>
