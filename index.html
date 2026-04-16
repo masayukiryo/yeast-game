@@ -1,246 +1,354 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>おうち科学思考ゲーム：酵母は何と反応する？</title>
-  <style>
-    body {
-      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
-      line-height: 1.7;
-      margin: 0;
-      background: #f7f7fb;
-      color: #222;
-    }
-    .wrap {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      margin-bottom: 20px;
-    }
-    h1, h2 {
-      margin-top: 0;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-    }
-    label.option {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      background: #fafafa;
-      cursor: pointer;
-    }
-    input[type="range"] {
-      width: 100%;
-    }
-    .buttons {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-    }
-    button {
-      border: none;
-      border-radius: 12px;
-      padding: 12px 18px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .run { background: #1f6feb; color: white; }
-    .reset { background: #e5e7eb; color: #222; }
-    .result-box {
-      border-left: 6px solid #1f6feb;
-      background: #f0f6ff;
-      padding: 16px;
-      border-radius: 12px;
-    }
-    .big {
-      font-size: 1.3rem;
-      font-weight: 700;
-    }
-    .small {
-      color: #555;
-    }
-    .meter {
-      height: 20px;
-      background: #e5e7eb;
-      border-radius: 999px;
-      overflow: hidden;
-      margin: 12px 0;
-    }
-    .fill {
-      height: 100%;
-      width: 0;
-      background: linear-gradient(90deg, #93c5fd, #2563eb);
-      transition: width 0.4s ease;
-    }
-    .note {
-      font-size: 0.95rem;
-      color: #444;
-    }
-    .footer {
-      font-size: 0.9rem;
-      color: #666;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ドライイースト実験ゲーム</title>
+
+<style>
+body {
+  font-family: "Hiragino Sans","Yu Gothic",sans-serif;
+  margin: 0;
+  color: #2f2a24;
+  background:
+    radial-gradient(1200px 300px at -10% 10%, rgba(255,255,255,0.5), transparent 60%),
+    radial-gradient(900px 240px at 110% 20%, rgba(255,255,255,0.3), transparent 60%),
+    linear-gradient(180deg,#fffaf2 0%,#f5ecdf 100%);
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background: linear-gradient(180deg,#6b4f3a 0%,#4a3527 100%);
+  color: white;
+  padding: 20px;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.08);
+}
+
+.sidebar h2 {
+  margin-top: 0;
+  font-size: 16px;
+  letter-spacing: 0.03em;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 9px 10px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+.sidebar a:hover {
+  background: rgba(255,255,255,0.14);
+}
+
+.main {
+  flex: 1;
+  padding: 24px;
+}
+
+.hero {
+  background: linear-gradient(135deg,#f6c56f 0%,#e39b4f 100%);
+  padding: 24px;
+  border-radius: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 24px rgba(180,120,50,0.18);
+}
+
+.hero-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero-icon {
+  font-size: 42px;
+  line-height: 1;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.hero p {
+  margin: 10px 0 0 0;
+  line-height: 1.7;
+}
+
+.card {
+  background: rgba(255,255,255,0.94);
+  padding: 18px;
+  margin-bottom: 16px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  border: 1px solid rgba(120,90,60,0.08);
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 10px;
+}
+
+label.option {
+  display: block;
+  background: #fffaf5;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #eadac7;
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+button {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #d97706;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.result {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 14px;
+  color: #9a3412;
+}
+
+#reason {
+  margin-top: 10px;
+  line-height: 1.8;
+  color: #5c4b3d;
+}
+
+.observation-box {
+  margin-top: 14px;
+  padding: 14px;
+  background: #fff7e8;
+  border-left: 6px solid #f59e0b;
+  border-radius: 10px;
+}
+
+.observation-box h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+}
+
+.observation-box ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.link-button {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #10b981;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(16,185,129,0.18);
+}
+
+.link-button:hover {
+  opacity: 0.86;
+}
+
+.note {
+  color: #6b5b4b;
+  font-size: 14px;
+}
+
+@media (max-width: 800px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: auto;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 24px;
+  }
+}
+</style>
+
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>おうち科学思考ゲーム：酵母は何と反応する？</h1>
-      <p>
-        パンづくりをヒントに、<strong>酵母に何を加えると、どんな変化が起きるか</strong>を考えるゲームです。
-        実験の前に予想してもいいし、実験のあとに結果とくらべてもOKです。
-      </p>
-    </div>
 
-    <div class="card">
-      <h2>1. 材料をえらぶ</h2>
-      <div class="grid">
-        <label class="option"><input type="checkbox" id="water"> 水</label>
-        <label class="option"><input type="checkbox" id="sugar"> 砂糖</label>
-        <label class="option"><input type="checkbox" id="salt"> 塩</label>
-        <label class="option"><input type="checkbox" id="flour"> 小麦粉</label>
-        <label class="option"><input type="checkbox" id="egg"> 卵</label>
-      </div>
-    </div>
+<div class="container">
 
-    <div class="card">
-      <h2>2. 温度をきめる</h2>
-      <p><strong><span id="tempValue">40</span>℃</strong></p>
-      <input type="range" id="temp" min="0" max="60" value="40" />
-      <p class="note">ヒント：低すぎても、高すぎても、酵母は元気に働きにくいかもしれません。</p>
-    </div>
-
-    <div class="card">
-      <h2>3. 予想してから、スタート</h2>
-      <div class="buttons">
-        <button class="run" onclick="runExperiment()">スタート</button>
-        <button class="reset" onclick="resetGame()">リセット</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>結果</h2>
-      <div class="result-box">
-        <div class="big" id="resultText">ここに結果が出ます</div>
-        <div class="meter"><div class="fill" id="fillBar"></div></div>
-        <p id="reasonText" class="small">材料と温度をえらんで、スタートを押してください。</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>考えてみよう</h2>
-      <ul>
-        <li>水がないと、どうして変化しにくいのかな？</li>
-        <li>砂糖を入れると、どうして変わるのかな？</li>
-        <li>40℃くらいで元気そうなのは、なぜかな？</li>
-        <li>塩を入れると、どんな影響があるのかな？</li>
-      </ul>
-      <p class="footer">※ このゲームは、おうち実験の考え方を遊べるようにした簡易モデルです。実際の酵母のふるまいは、量や時間、材料の種類でも変わります。</p>
-    </div>
+  <div class="sidebar">
+    <h2>実験一覧</h2>
+    <a href="index.html">① ドライイーストは何と反応する？</a>
+    <a href="#">② 温度と変化（予定）</a>
+    <a href="#">③ 袋と膨らみ（予定）</a>
   </div>
 
-  <script>
-    const tempSlider = document.getElementById('temp');
-    const tempValue = document.getElementById('tempValue');
-    tempSlider.addEventListener('input', () => {
-      tempValue.textContent = tempSlider.value;
+  <div class="main">
+
+```
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-icon">🍞</div>
+    <h1>ドライイーストに何を加えると発酵する？</h1>
+  </div>
+  <p>
+    ドライイーストは乾燥している。まずは液体が必要ではないか？
+    さらに、何を加えると変化が大きくなるのかを考えてみよう。
+  </p>
+</div>
+
+<div class="card">
+  <h2>① 液体をえらぶ</h2>
+  <div class="grid">
+    <label class="option"><input type="radio" name="liquid" value="water"> 水</label>
+    <label class="option"><input type="radio" name="liquid" value="milk"> 牛乳</label>
+  </div>
+</div>
+
+<div class="card">
+  <h2>② 何を加える？</h2>
+  <div class="grid">
+    <label class="option"><input type="radio" name="addin" value="nothing" checked> 何も加えない</label>
+    <label class="option"><input type="radio" name="addin" value="sugar"> 砂糖</label>
+    <label class="option"><input type="radio" name="addin" value="salt"> 塩</label>
+  </div>
+</div>
+
+<div class="card">
+  <h2>③ 温度</h2>
+  <input type="range" id="temp" min="0" max="60" value="40">
+  <div id="tempVal">40℃</div>
+  <p class="note">ヒント：パン作りでは、あたたかい温度で変化が起きやすいことがある。</p>
+</div>
+
+<div class="card">
+  <button onclick="run()">スタート</button>
+  <div class="result" id="result">ここに結果</div>
+  <div id="reason"></div>
+
+  <div class="observation-box" id="observationBox" style="display:none;">
+    <h3>今回の実験から分かったこと</h3>
+    <ul id="observationList"></ul>
+  </div>
+</div>
+
+<div class="card" style="text-align:center;">
+  <p>実際のおうち実験も見てみよう</p>
+  <a href="experiment-log.html" class="link-button">我が家のおうち実験 →</a>
+</div>
+```
+
+  </div>
+</div>
+
+<script>
+const temp = document.getElementById('temp');
+const tempVal = document.getElementById('tempVal');
+
+temp.oninput = () => {
+  tempVal.textContent = temp.value + '℃';
+};
+
+function run() {
+  const liquid = document.querySelector('input[name="liquid"]:checked');
+  const addin = document.querySelector('input[name="addin"]:checked').value;
+  const t = Number(temp.value);
+
+  let score = 0;
+  let reason = [];
+  let observations = [];
+
+  if (!liquid) {
+    reason.push('ドライイーストは乾燥しているので、まず液体が必要。');
+  } else {
+    if (liquid.value === 'water') {
+      score += 25;
+      reason.push('水を加えると、ドライイーストが活動しやすくなる。');
+    }
+
+    if (liquid.value === 'milk') {
+      score += 20;
+      reason.push('牛乳でも水分があるので、ドライイーストは活動しやすくなる。');
+    }
+
+    if (addin === 'nothing') {
+      reason.push('何も加えないと、変化は小さくなりやすい。');
+    }
+
+    if (addin === 'sugar') {
+      score += 40;
+      reason.push('砂糖を加えると、発酵が進みやすい。');
+      observations.push('砂糖を加えたものは泡が発生した。');
+      observations.push('砂糖の有無で明確に差がある。');
+    }
+
+    if (addin === 'salt') {
+      score -= 20;
+      reason.push('塩を加えると、ドライイーストの活動が弱まりやすい。');
+    }
+
+    if (t >= 35 && t <= 42) {
+      score += 30;
+      reason.push('温度が適していて、変化が起きやすい。');
+    } else {
+      reason.push('温度が適温から外れていて、変化が弱くなるかもしれない。');
+    }
+  }
+
+  if (score < 0) score = 0;
+
+  let text = '変化なし';
+  if (score > 20) text = '少し変化';
+  if (score > 50) text = '発酵する';
+  if (score > 80) text = 'よく発酵！';
+
+  document.getElementById('result').textContent = text;
+  document.getElementById('reason').textContent = reason.join(' / ');
+
+  const observationBox = document.getElementById('observationBox');
+  const observationList = document.getElementById('observationList');
+  observationList.innerHTML = '';
+
+  if (observations.length > 0) {
+    observations.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item;
+      observationList.appendChild(li);
     });
+    observationBox.style.display = 'block';
+  } else {
+    observationBox.style.display = 'none';
+  }
+}
+</script>
 
-    function runExperiment() {
-      const water = document.getElementById('water').checked;
-      const sugar = document.getElementById('sugar').checked;
-      const salt = document.getElementById('salt').checked;
-      const flour = document.getElementById('flour').checked;
-      const egg = document.getElementById('egg').checked;
-      const temp = Number(document.getElementById('temp').value);
-
-      let score = 0;
-      let reasons = [];
-
-      if (!water) {
-        score = 0;
-        reasons.push('水がないので、酵母が働きにくい。');
-      } else {
-        score += 25;
-        reasons.push('水があるので、酵母が働ける条件に近づいた。');
-
-        if (sugar) {
-          score += 35;
-          reasons.push('砂糖があるので、酵母の反応が進みやすい。');
-        } else {
-          reasons.push('砂糖がないので、反応は強くなりにくい。');
-        }
-
-        if (temp >= 35 && temp <= 42) {
-          score += 30;
-          reasons.push('温度がちょうどよく、酵母が元気に働きやすい。');
-        } else if ((temp >= 20 && temp < 35) || (temp > 42 && temp <= 50)) {
-          score += 10;
-          reasons.push('温度は悪くないけれど、ベストではない。');
-        } else {
-          reasons.push('温度が低すぎるか高すぎて、酵母が働きにくい。');
-        }
-
-        if (salt) {
-          score -= 20;
-          reasons.push('塩があるので、酵母の働きが弱まりやすい。');
-        }
-
-        if (flour) {
-          score += 5;
-          reasons.push('小麦粉があると、パンづくりらしい条件に近づく。');
-        }
-
-        if (egg) {
-          reasons.push('卵はパンづくりには使うことがあるけれど、酵母の反応そのものを強める主役ではなさそう。');
-        }
-      }
-
-      if (score < 0) score = 0;
-      if (score > 100) score = 100;
-
-      let resultText = '';
-      if (score === 0) {
-        resultText = '変化なし';
-      } else if (score <= 30) {
-        resultText = 'すこしだけ変化';
-      } else if (score <= 70) {
-        resultText = 'ちょっとふくらむ';
-      } else {
-        resultText = 'よくふくらむ！';
-      }
-
-      document.getElementById('resultText').textContent = resultText;
-      document.getElementById('reasonText').textContent = reasons.join(' ');
-      document.getElementById('fillBar').style.width = score + '%';
-    }
-
-    function resetGame() {
-      document.getElementById('water').checked = false;
-      document.getElementById('sugar').checked = false;
-      document.getElementById('salt').checked = false;
-      document.getElementById('flour').checked = false;
-      document.getElementById('egg').checked = false;
-      document.getElementById('temp').value = 40;
-      document.getElementById('tempValue').textContent = 40;
-      document.getElementById('resultText').textContent = 'ここに結果が出ます';
-      document.getElementById('reasonText').textContent = '材料と温度をえらんで、スタートを押してください。';
-      document.getElementById('fillBar').style.width = '0%';
-    }
-  </script>
 </body>
 </html>
